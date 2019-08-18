@@ -12,27 +12,46 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var plistPathInDocument:String = String()
+    var jsonPathInDocument:String = String()
     var window: UIWindow?
-    
+   
     func preparePlistForUse(){
         
         let rootPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, .userDomainMask, true)[0]
-        
+        jsonPathInDocument = rootPath.appendingFormat("/data.json")
         plistPathInDocument = rootPath.appendingFormat("/data.plist")
         if !FileManager.default.fileExists(atPath: plistPathInDocument){
             let plistPathInBundle = Bundle.main.path(forResource: "data", ofType: "plist") as String?
             
+            
+            
             do {
                 try FileManager.default.copyItem(atPath: plistPathInBundle!, toPath: plistPathInDocument)
+                
             }catch{
                 print("Error occurred while copying file to document \(error)")
             }
         }
     }
+    
+    
+        
+        func serializeDataToJSON(){
+            do {
+                let data:NSData =  FileManager.default.contents(atPath: plistPathInDocument)! as NSData
+                let dict = try PropertyListSerialization.propertyList(from: data as Data, options: PropertyListSerialization.MutabilityOptions.mutableContainersAndLeaves, format: nil) as! NSMutableArray
+                print(dict)
+                let jsonData = try JSONSerialization.data(withJSONObject: dict , options: .prettyPrinted)
+                try jsonData.write(to:URL.init(fileURLWithPath: jsonPathInDocument))
+            } catch {
+                print(error)
+            }
+        }
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
         self.preparePlistForUse()
         return true
     }
@@ -54,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         self.preparePlistForUse()
+        self.serializeDataToJSON()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

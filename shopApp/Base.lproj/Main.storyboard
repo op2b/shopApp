@@ -59,7 +59,7 @@
             </objects>
             <point key="canvasLocation" x="492.75362318840581" y="34.821428571428569"/>
         </scene>
-        <!--Sell Item-->
+        <!--New Item-->
         <scene sceneID="SG9-VT-uNA">
             <objects>
                 <tableViewController id="igk-AI-7cN" customClass="NewItemTableViewController" customModule="shopApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -184,7 +184,7 @@
                             <outlet property="delegate" destination="igk-AI-7cN" id="Gbp-ye-KjY"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Sell Item" id="AMz-6P-GED">
+                    <navigationItem key="navigationItem" title="New Item" id="AMz-6P-GED">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="9wv-zH-29G">
                             <connections>
                                 <segue destination="rJo-nG-5xX" kind="unwind" unwindAction="cancelAction:" id="Eh8-36-RYm"/>

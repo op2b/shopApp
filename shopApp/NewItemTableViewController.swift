@@ -45,12 +45,15 @@ class NewItemTableViewController: UITableViewController {
             let notesArray = try PropertyListSerialization.propertyList(from: data as Data, options: PropertyListSerialization.MutabilityOptions.mutableContainersAndLeaves, format: nil) as! NSMutableArray
             notesArray.add(["name":nameLabel.text, "description": descriptionView.text, "cost":costLabel.text])
             
+            
             // Save to plist
             notesArray.write(toFile: pathForThePlistFile, atomically: true)
+            
         }catch{
             print("An error occurred while writing to plist")
         }
         // Dismiss the modal controller
+        appDelegate.serializeDataToJSON()
         self.dismiss(animated: true, completion: nil)
     }
     
